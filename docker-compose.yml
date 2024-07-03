@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  app:
+    image: reneat-microservice-user-app
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile-dev
+    environment:
+      - APP_ENV=local
+    ports:
+      - "9014:9014"
+      - "5114:5114"
+    volumes:
+      - .:/app
+      - ./config:/app/config
+    command: go run main.go

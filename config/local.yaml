@@ -1,0 +1,39 @@
+env:
+  mode: test
+
+server:
+  port: 9014
+  grpc_port: 5113
+  locale: 'en'
+  timezone: UTC
+  secret_key: 18610529c2a1c9079d5b9e32f72fe7f081dde9d6abe60431f681f8c70fc03ac8
+  secret_token: s3cr3tt0k3n
+  permission_service:
+    type: management
+    name: promotion
+
+database:
+  host: host.docker.internal
+  port: 27017
+  username:
+  password:
+  db_name: reneat
+  ssl: false
+
+jwt:
+  expires_at: '168h'
+  secret: ${JWT_SECRET}
+
+#aws:
+#  key:
+#    id: ${AWS_KEY_ID}
+#    secret: ${AWS_KEY_SECRET}
+#  s3:
+#    bucket: static-travel-dev.diqit.io
+#    region: ap-southeast-1
+#    folder: uploads
+#
+#grpc:
+#  auth:
+#    host: ${GRPC_AUTH_HOST}
+#    port:

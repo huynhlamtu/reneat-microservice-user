@@ -1,0 +1,973 @@
+definitions:
+  auth.GetLoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  permission.CreateRequest:
+    properties:
+      api:
+        type: string
+      is_active:
+        type: integer
+      name:
+        type: string
+      service:
+        type: string
+    required:
+    - api
+    - is_active
+    - name
+    - service
+    type: object
+  permission.UpdateRequest:
+    properties:
+      api:
+        type: string
+      is_active:
+        type: integer
+      name:
+        type: string
+      service:
+        type: string
+    type: object
+  permission.UpdateStatusRequest:
+    properties:
+      is_active:
+        type: integer
+    required:
+    - is_active
+    type: object
+  respond.PaginationResponse:
+    properties:
+      items: {}
+      limit:
+        type: string
+      page:
+        type: integer
+      pages:
+        type: integer
+      total:
+        type: integer
+    type: object
+  respond.Respond:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+  role.CreateRequest:
+    properties:
+      is_active:
+        type: integer
+      level:
+        type: integer
+      name:
+        type: string
+      permissions:
+        items:
+          type: string
+        type: array
+      sub_roles:
+        items:
+          type: string
+        type: array
+    required:
+    - is_active
+    - level
+    - name
+    type: object
+  role.UpdateRequest:
+    properties:
+      is_active:
+        type: integer
+      level:
+        type: integer
+      name:
+        type: string
+      permissions:
+        items:
+          type: string
+        type: array
+      sub_roles:
+        items:
+          type: string
+        type: array
+    type: object
+  role.UpdateStatusRequest:
+    properties:
+      is_active:
+        type: integer
+    type: object
+  user.CreateRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      roles:
+        items:
+          type: string
+        type: array
+      username:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - username
+    type: object
+  user.UpdateRequest:
+    properties:
+      email:
+        type: string
+      is_active:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      roles:
+        items:
+          type: string
+        type: array
+      username:
+        type: string
+    type: object
+  user.UpdateStatusRequest:
+    properties:
+      is_active:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /permissions:
+    get:
+      consumes:
+      - application/json
+      description: Get list paginate permissions
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      - in: query
+        name: is_active
+        type: integer
+      - in: query
+        name: keyword
+        type: string
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: List permissions
+      tags:
+      - permission
+    post:
+      consumes:
+      - application/json
+      description: Create permission
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/permission.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Create permission
+      tags:
+      - permission
+  /permissions/:uuid:
+    delete:
+      consumes:
+      - application/json
+      description: Delete permission
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      - description: query uri
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Delete permission
+      tags:
+      - permission
+    get:
+      consumes:
+      - application/json
+      description: Get permission detail
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      - description: query uri
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Get permission detail
+      tags:
+      - permission
+    put:
+      consumes:
+      - application/json
+      description: Update permission detail
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      - description: query uri
+        in: path
+        name: uuid
+        required: true
+        type: string
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/permission.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Update permission detail
+      tags:
+      - permission
+  /permissions/:uuid/update-status:
+    put:
+      consumes:
+      - application/json
+      description: Update permission status
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      - description: query uri
+        in: path
+        name: uuid
+        required: true
+        type: string
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/permission.UpdateStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Update permission status
+      tags:
+      - permission
+  /permissions/list-api-by-user:
+    get:
+      consumes:
+      - application/json
+      description: List permission apis by user uuid
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      - in: query
+        name: user_uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: List permission apis by user
+      tags:
+      - permission
+  /permissions/list-common:
+    get:
+      consumes:
+      - application/json
+      description: Get list common permissions with some important field
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: List common permissions
+      tags:
+      - permission
+  /roles:
+    get:
+      consumes:
+      - application/json
+      description: Get list roles
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - in: query
+        name: is_active
+        type: integer
+      - in: query
+        name: level
+        type: integer
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.PaginationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Get list roles
+      tags:
+      - roles
+    post:
+      consumes:
+      - application/json
+      description: Create new role if not exists
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/role.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Create role
+      tags:
+      - roles
+  /roles/{uuid}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete role with Uuid
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: Roles Uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Delete role
+      tags:
+      - roles
+    get:
+      consumes:
+      - application/json
+      description: Get role detail with Uuid
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: Roles Uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Get role detail
+      tags:
+      - roles
+    put:
+      consumes:
+      - application/json
+      description: Update role with Uuid
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: Roles Uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/role.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Update role
+      tags:
+      - roles
+  /roles/{uuid}/update-status:
+    put:
+      consumes:
+      - application/json
+      description: UpdateStatus role with Uuid
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - description: Roles Uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/role.UpdateStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: UpdateStatus role
+      tags:
+      - roles
+  /roles/list-common:
+    get:
+      consumes:
+      - application/json
+      description: Get list role common
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        required: true
+        type: string
+      - in: query
+        name: is_active
+        type: integer
+      - in: query
+        name: level
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Get list role common
+      tags:
+      - roles
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Get list users
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      - in: query
+        name: is_active
+        type: integer
+      - in: query
+        name: keyword
+        type: string
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      - in: query
+        name: sort
+        type: string
+      - in: query
+        name: username
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.PaginationResponse'
+      summary: Get list users test ss
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Create new user
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Create user
+      tags:
+      - users
+  /users/{uuid}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user with Uuid
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      - description: User Uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Delete user
+      tags:
+      - users
+    get:
+      consumes:
+      - application/json
+      description: Get detail user with Uuid
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      - description: User Uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Get detail user
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Update user with Uuid
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      - description: User Uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Update user
+      tags:
+      - users
+  /users/{uuid}/update-status:
+    put:
+      consumes:
+      - application/json
+      description: UpdateStatus user with Uuid
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      - description: Users Uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: UpdateStatus user
+      tags:
+      - users
+  /users/list-common:
+    get:
+      consumes:
+      - application/json
+      description: Get list users common
+      parameters:
+      - description: header x-token
+        in: header
+        name: x-token
+        type: string
+      - in: query
+        name: is_active
+        type: integer
+      - in: query
+        name: is_admin
+        type: integer
+      - in: query
+        name: roles
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Get list users common
+      tags:
+      - users
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Login with user info then return the token credential
+      parameters:
+      - description: query body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/auth.GetLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Login user
+      tags:
+      - auth
+  /users/logout:
+    post:
+      consumes:
+      - application/json
+      description: Remove user token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/respond.Respond'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/respond.Respond'
+      summary: Logout user
+      tags:
+      - auth
+swagger: "2.0"
