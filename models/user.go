@@ -12,31 +12,29 @@ import (
 	"time"
 )
 
-type UserRole struct {
-	Uuid string `json:"uuid" bson:"uuid"`
-	Name string `json:"name" bson:"name"`
-}
-
 type User struct {
-	ClientUuid string     `json:"client_uuid, omitempty" bson:"client_uuid"`
-	Uuid       string     `json:"uuid,omitempty" bson:"uuid"`
-	FirstName  string     `json:"first_name" bson:"first_name"`
-	LastName   string     `json:"last_name" bson:"last_name"`
-	Email      string     `json:"email,omitempty" bson:"email"`
-	Username   string     `json:"username,omitempty" bson:"username"`
-	Password   string     `json:"password,omitempty" bson:"password"`
-	IsBlock    int        `json:"is_block" bson:"is_block"`
-	IsVerified int        `json:"is_verified" bson:"is_verified"`
-	Tried      int        `json:"tried" bson:"tried"`
-	Token      string     `json:"token" bson:"token"`
-	Roles      []UserRole `json:"roles" bson:"roles"`
-	IsAdmin    int        `json:"is_admin" bson:"is_admin"`
-	IsActive   int        `json:"is_active" bson:"is_active"`
-	IsDelete   int        `json:"is_delete" bson:"is_delete"`
-	CreatedAt  time.Time  `json:"created_at" bson:"created_at"`
-	UpdatedAt  time.Time  `json:"updated_at" bson:"updated_at"`
-	CreatedBy  *string    `json:"created_by" bson:"created_by"`
-	UpdatedBy  *string    `json:"updated_by" bson:"updated_by"`
+	ClientUuid string    `json:"client_uuid, omitempty" bson:"client_uuid"`
+	Uuid       string    `json:"uuid,omitempty" bson:"uuid"`
+	FirstName  string    `json:"first_name" bson:"first_name"`
+	LastName   string    `json:"last_name" bson:"last_name"`
+	Email      string    `json:"email,omitempty" bson:"email"`
+	Username   string    `json:"username,omitempty" bson:"username"`
+	Password   string    `json:"password,omitempty" bson:"password"`
+	Bio        string    `json:"bio" bson:"bio"`
+	ProfileUrl string    `json:"profile_url" bson:"profile_url"`
+	Followers  []string  `json:"followers" bson:"followers"`
+	Followings []string  `json:"followings" bson:"followings"`
+	Posts      []string  `json:"posts" bson:"posts"`
+	IsBlock    int       `json:"is_block" bson:"is_block"`
+	IsVerified int       `json:"is_verified" bson:"is_verified"`
+	Tried      int       `json:"tried" bson:"tried"`
+	Token      string    `json:"token" bson:"token"`
+	IsActive   int       `json:"is_active" bson:"is_active"`
+	IsDelete   int       `json:"is_delete" bson:"is_delete"`
+	CreatedAt  time.Time `json:"created_at" bson:"created_at"`
+	UpdatedAt  time.Time `json:"updated_at" bson:"updated_at"`
+	CreatedBy  *string   `json:"created_by" bson:"created_by"`
+	UpdatedBy  *string   `json:"updated_by" bson:"updated_by"`
 }
 
 func (u *User) Model() *mongo.Collection {

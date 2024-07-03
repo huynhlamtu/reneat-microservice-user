@@ -76,7 +76,6 @@ func GetUserByToken(token string) (*models.User, error) {
 		LastName:   payload["last_name"].(string),
 		Username:   payload["username"].(string),
 		Email:      payload["email"].(string),
-		IsAdmin:    int(payload["is_admin"].(float64)),
 	}
 
 	return &user, nil

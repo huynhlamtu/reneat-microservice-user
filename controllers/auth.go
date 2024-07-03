@@ -36,7 +36,6 @@ type JWTPayload struct {
 	FirstName  string `json:"first_name"`
 	LastName   string `json:"last_name"`
 	Email      string `json:"email"`
-	IsAdmin    int    `json:"is_admin"`
 }
 
 // Register
@@ -104,7 +103,16 @@ func (authCtl AuthController) Register(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, respond.Success(bson.M{"uuid": user.Uuid}, "Created Successfully"))
+	resUser := request.RegisterResponse{
+		ClientUuid: user.ClientUuid,
+		Uuid:       user.Uuid,
+		Email:      user.Email,
+		Username:   user.Username,
+		FirstName:  user.FirstName,
+		LastName:   user.LastName,
+	}
+
+	c.JSON(http.StatusOK, respond.Success(resUser, "Created Successfully"))
 }
 
 // Login
@@ -157,7 +165,6 @@ func (authCtl AuthController) Login(c *gin.Context) {
 			FirstName:  user.FirstName,
 			LastName:   user.LastName,
 			Email:      user.Email,
-			IsAdmin:    user.IsAdmin,
 		},
 		jwt.StandardClaims{
 			Issuer:    "reneat-microservice-user",
