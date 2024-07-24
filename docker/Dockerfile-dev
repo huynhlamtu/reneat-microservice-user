@@ -1,11 +1,14 @@
 # Use the official Golang image
 FROM golang:1.21-alpine
 
-# Install git, required for fetching Go dependencies.
+# Install git, required for fetching Go dependencies
 RUN apk add --no-cache git
 
 # Set the working directory
 WORKDIR /app
+
+# Install Air for hot reloading
+RUN go install github.com/cosmtrek/air@v1.28.0
 
 # Copy the go.mod and go.sum file to handle dependencies
 COPY go.mod go.sum ./
@@ -20,6 +23,5 @@ ENV APP_ENV=local
 # Expose the necessary ports (make sure these match your actual application)
 EXPOSE 9014 5114
 
-# Command to run the application using Go
-CMD ["go", "run", "main.go"]
-# Make sure the CMD points to your main application file
+# Command to run the application using Air for hot reloading
+CMD ["air", "-c", ".air.toml"]

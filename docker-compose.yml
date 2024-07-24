@@ -3,6 +3,7 @@ version: '3.8'
 services:
   app:
     image: reneat-microservice-user-app
+    container_name: reneat-microservice-user
     build:
       context: .
       dockerfile: ./docker/Dockerfile-dev

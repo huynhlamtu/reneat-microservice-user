@@ -1,0 +1,43 @@
+# .air.toml
+
+# Config file for air: https://github.com/cosmtrek/air
+
+# Working directory
+root = "."
+tmp_dir = "tmp"
+build_dir = "."
+
+# List of files or directories to exclude from watching
+exclude_dir = [
+    "tmp",
+    "vendor",
+    "node_modules",
+]
+
+# List of extensions to watch
+extensions = [
+    ".go",
+    ".tpl",
+    ".tmpl",
+    ".html",
+    ".js",
+    ".css",
+]
+
+# Binary name
+bin = "app"
+
+# Command to run after build
+cmd = "main.go"
+
+# Custom pre-build command
+pre_build_cmd = "echo 'pre-build'"
+
+# Custom post-build command
+post_build_cmd = "echo 'post-build'"
+
+# Delay in milliseconds
+delay = 200
+
+# Log level: debug, info, warn, error, fatal
+log_level = "debug"

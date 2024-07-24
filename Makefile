@@ -5,7 +5,9 @@ start:
 logs:
 	docker logs -f reneat-microservice-user
 ssh-app:
-	docker exec -it reneat-microservice-user bash
+	docker exec -it reneat-microservice-user sh
+ps:
+	docker-compose ps
 swagger:
 	rm -rf docs/ && swag fmt && swag init ./controllers/*
 proto-user:

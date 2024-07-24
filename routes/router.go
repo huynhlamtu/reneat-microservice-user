@@ -38,7 +38,7 @@ func RouteInit(engine *gin.Engine) {
 	apiV1.Use(middleware.RequestLog())
 	{
 		apiV1.POST("/users/register", authCtr.Register)
-		//apiV1.POST("/users/logout", authCtr.Logout)
+		apiV1.POST("/users/login", authCtr.Login)
 	}
 
 	//apiV1.Use(middleware.VerifyAuth())
