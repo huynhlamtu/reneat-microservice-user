@@ -124,3 +124,11 @@ func CanNotCreate(entityName string) Respond {
 		Data:    nil,
 	}
 }
+
+func GetDetailSuccessfully(data interface{}, entityName string) Respond {
+	return Respond{
+		Code:    constant.SUCCESS,
+		Message: fmt.Sprintf("Get %v detail successfully", entityName),
+		Data:    data,
+	}
+}

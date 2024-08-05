@@ -199,3 +199,52 @@ func (authCtl AuthController) Login(c *gin.Context) {
 
 	c.JSON(http.StatusOK, respond.Success(resp, "Login successfully!"))
 }
+
+// Detail
+//
+//	@Summary	Detail user by username
+//	@Schemes
+//	@Description	Get user info by username
+//	@Tags			auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			uuid	path		string	true	"Username"
+//	@Success		200		{object}	respond.Respond
+//	@Failure		400		{object}	respond.Respond
+//	@Router			/users/:username [get]
+func (authCtl AuthController) Detail(c *gin.Context) {
+	var req request.UserDetailRequest
+
+	err := c.ShouldBindUri(&req)
+	if err != nil {
+		_ = c.Error(err)
+		c.JSON(http.StatusBadRequest, respond.MissingParams())
+		return
+	}
+
+	cond := bson.M{
+		"username": req.Username,
+	}
+
+	util.DebugJson(cond)
+
+	user, err := authCtl.UserModel.FindOne(cond)
+
+	if err != nil {
+		_ = c.Error(err)
+		c.JSON(http.StatusBadRequest, respond.NotFound())
+		return
+	}
+
+	res := request.UserDetailResponse{
+		ClientUuid: user.ClientUuid,
+		Uuid:       user.Uuid,
+		Email:      user.Email,
+		Username:   user.Username,
+		FirstName:  user.FirstName,
+		LastName:   user.LastName,
+		Name:       user.FirstName + " " + user.LastName,
+	}
+
+	c.JSON(http.StatusOK, respond.GetDetailSuccessfully(res, userEntity))
+}
