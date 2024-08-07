@@ -1,11 +1,10 @@
 package auth
 
-type GetLoginRequest struct {
-	Email    string `json:"email" binding:"required"`
-	Password string `json:"password" binding:"required"`
+type UserInfoRequest struct {
+	Uuid string `uri:"uuid" binding:"required"`
 }
 
-type GetLoginResponse struct {
+type UserInfoResponse struct {
 	ClientUuid string `json:"client_uuid"`
 	Uuid       string `json:"uuid"`
 	Email      string `json:"email"`

@@ -194,6 +194,9 @@ func (authCtl AuthController) Login(c *gin.Context) {
 		Email:      user.Email,
 		FirstName:  user.FirstName,
 		LastName:   user.LastName,
+		Username:   user.Username,
+		ProfileUrl: user.ProfileUrl,
+		Name:       fmt.Sprintf(`%s %s`, user.FirstName, user.LastName),
 		Token:      token,
 	}
 
@@ -211,7 +214,7 @@ func (authCtl AuthController) Login(c *gin.Context) {
 //	@Param			uuid	path		string	true	"Username"
 //	@Success		200		{object}	respond.Respond
 //	@Failure		400		{object}	respond.Respond
-//	@Router			/users/:username [get]
+//	@Router			/users/user/:username [get]
 func (authCtl AuthController) Detail(c *gin.Context) {
 	var req request.UserDetailRequest
 
@@ -225,8 +228,6 @@ func (authCtl AuthController) Detail(c *gin.Context) {
 	cond := bson.M{
 		"username": req.Username,
 	}
-
-	util.DebugJson(cond)
 
 	user, err := authCtl.UserModel.FindOne(cond)
 
@@ -243,7 +244,60 @@ func (authCtl AuthController) Detail(c *gin.Context) {
 		Username:   user.Username,
 		FirstName:  user.FirstName,
 		LastName:   user.LastName,
-		Name:       user.FirstName + " " + user.LastName,
+		Followers:  user.Followers,
+		Followings: user.Followings,
+		Posts:      user.Posts,
+		Bio:        user.Bio,
+		ProfileUrl: user.ProfileUrl,
+		Name:       fmt.Sprintf(`%s %s`, user.FirstName, user.LastName),
+	}
+
+	c.JSON(http.StatusOK, respond.GetDetailSuccessfully(res, userEntity))
+}
+
+// Info
+//
+//	@Summary	Info user by uuid
+//	@Schemes
+//	@Description	Get user info by uuid
+//	@Tags			auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			uuid	path		string	true	"Uuid"
+//	@Success		200		{object}	respond.Respond
+//	@Failure		400		{object}	respond.Respond
+//	@Router			/users/info/:Uuid [get]
+func (authCtl AuthController) Info(c *gin.Context) {
+	var req request.UserInfoRequest
+
+	err := c.ShouldBindUri(&req)
+	if err != nil {
+		_ = c.Error(err)
+		c.JSON(http.StatusBadRequest, respond.MissingParams())
+		return
+	}
+
+	cond := bson.M{
+		"uuid": req.Uuid,
+	}
+
+	user, err := authCtl.UserModel.FindOne(cond)
+
+	if err != nil {
+		_ = c.Error(err)
+		c.JSON(http.StatusBadRequest, respond.NotFound())
+		return
+	}
+
+	res := request.UserInfoResponse{
+		ClientUuid: user.ClientUuid,
+		Uuid:       user.Uuid,
+		Email:      user.Email,
+		Username:   user.Username,
+		FirstName:  user.FirstName,
+		LastName:   user.LastName,
+		ProfileUrl: user.ProfileUrl,
+		Name:       fmt.Sprintf(`%s %s`, user.FirstName, user.LastName),
 	}
 
 	c.JSON(http.StatusOK, respond.GetDetailSuccessfully(res, userEntity))
